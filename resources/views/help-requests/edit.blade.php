@@ -18,7 +18,11 @@
                             <label for="receiver_id" class="form-label">Destinataire</label>
                             <select name="receiver_id" id="receiver_id" class="form-select @error('receiver_id') is-invalid @enderror" required>
                                 @foreach ($users as $user)
-                                    <option value="{{ $user->id }}" {{ old('receiver_id', $helpRequest->receiver_id) == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
+                                    <option
+                                        value="{{ $user->id }}"
+                                        data-skills="{{ $user->skills->pluck('name', 'id')->toJson() }}"
+                                        {{ old('receiver_id', $helpRequest->receiver_id) == $user->id ? 'selected' : '' }}
+                                    >{{ $user->name }}</option>
                                 @endforeach
                             </select>
                             @error('receiver_id')
@@ -28,13 +32,10 @@
 
                         <div class="mb-3">
                             <label for="skill_id" class="form-label">Compétence</label>
-                            <select name="skill_id" id="skill_id" class="form-select @error('skill_id') is-invalid @enderror" required>
-                                @foreach ($skills as $skill)
-                                    <option value="{{ $skill->id }}" {{ old('skill_id', $helpRequest->skill_id) == $skill->id ? 'selected' : '' }}>{{ $skill->name }}</option>
-                                @endforeach
-                            </select>
+                            <select name="skill_id" id="skill_id" class="form-select @error('skill_id') is-invalid @enderror" required></select>
+                            <div class="text-muted mt-1" id="skill-hint" style="font-size: 0.8125rem;"></div>
                             @error('skill_id')
-                                <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
 
@@ -69,4 +70,50 @@
             </div>
         </div>
     </div>
+
+    @push('scripts')
+    <script>
+    (function () {
+        const receiverSelect = document.getElementById('receiver_id');
+        const skillSelect = document.getElementById('skill_id');
+        const skillHint = document.getElementById('skill-hint');
+        const currentSkillId = "{{ old('skill_id', $helpRequest->skill_id) }}";
+
+        function refreshSkills() {
+            const option = receiverSelect.options[receiverSelect.selectedIndex];
+            skillSelect.innerHTML = '';
+
+            let skills = {};
+            try {
+                skills = option ? JSON.parse(option.dataset.skills || '{}') : {};
+            } catch (e) {
+                skills = {};
+            }
+
+            const entries = Object.entries(skills);
+
+            if (!entries.length) {
+                skillSelect.innerHTML = '<option value="">Aucune compétence renseignée par ce membre</option>';
+                skillHint.textContent = 'Ce membre n\'a pas encore renseigné de compétences.';
+                return;
+            }
+
+            skillHint.textContent = 'Compétences proposées par ' + option.text + '.';
+
+            entries.forEach(([id, name]) => {
+                const opt = document.createElement('option');
+                opt.value = id;
+                opt.textContent = name;
+                if (currentSkillId === id) {
+                    opt.selected = true;
+                }
+                skillSelect.appendChild(opt);
+            });
+        }
+
+        receiverSelect.addEventListener('change', refreshSkills);
+        refreshSkills();
+    })();
+    </script>
+    @endpush
 </x-app-layout>

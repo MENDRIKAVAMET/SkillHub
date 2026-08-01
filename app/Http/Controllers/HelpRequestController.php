@@ -14,7 +14,12 @@ class HelpRequestController extends Controller
 {
     public function index(): View
     {
+        $userId = auth()->id();
+
         $helpRequests = HelpRequest::with(['sender', 'receiver', 'skill'])
+            ->where(function ($query) use ($userId) {
+                $query->where('sender_id', $userId)->orWhere('receiver_id', $userId);
+            })
             ->latest()
             ->paginate(10);
 
@@ -23,7 +28,10 @@ class HelpRequestController extends Controller
 
     public function create(): View
     {
-        $users = User::orderBy('name')->get();
+        $users = User::where('id', '!=', auth()->id())
+            ->with('skills')
+            ->orderBy('name')
+            ->get();
         $skills = Skill::orderBy('name')->get();
 
         return view('help-requests.create', compact('users', 'skills'));
@@ -32,7 +40,6 @@ class HelpRequestController extends Controller
     public function store(StoreHelpRequestRequest $request): RedirectResponse
     {
         $data = $request->validated();
-        $data['user_id'] = auth()->id();
         $data['sender_id'] = auth()->id();
         $data['status'] = 'En attente';
 
@@ -52,7 +59,10 @@ class HelpRequestController extends Controller
     public function edit(HelpRequest $helpRequest): View
     {
         $this->authorize('update', $helpRequest);
-        $users = User::orderBy('name')->get();
+        $users = User::where('id', '!=', auth()->id())
+            ->with('skills')
+            ->orderBy('name')
+            ->get();
         $skills = Skill::orderBy('name')->get();
 
         return view('help-requests.edit', compact('helpRequest', 'users', 'skills'));

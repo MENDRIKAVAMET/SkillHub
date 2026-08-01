@@ -7,9 +7,17 @@
 
         <title>{{ config('app.name', 'SkillHub') }}</title>
 
+        <script>
+            (function () {
+                var stored = localStorage.getItem('theme');
+                var theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                document.documentElement.setAttribute('data-bs-theme', theme);
+            })();
+        </script>
+
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
         <link rel="preconnect" href="https://cdn.jsdelivr.net">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -37,5 +45,7 @@
 
             @include('layouts.footer')
         </div>
+
+        @stack('scripts')
     </body>
 </html>

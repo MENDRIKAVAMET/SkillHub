@@ -11,7 +11,7 @@
 
     <div class="row g-4 mb-4">
         <div class="col-sm-6 col-lg">
-            <div class="stat-card h-100">
+            <div class="stat-card h-100 hover-lift">
                 <div class="stat-card-icon icon-primary">
                     <i class="bi bi-lightning-charge"></i>
                 </div>
@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="col-sm-6 col-lg">
-            <div class="stat-card h-100">
+            <div class="stat-card h-100 hover-lift">
                 <div class="stat-card-icon icon-success">
                     <i class="bi bi-book"></i>
                 </div>
@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="col-sm-6 col-lg">
-            <div class="stat-card h-100">
+            <div class="stat-card h-100 hover-lift">
                 <div class="stat-card-icon icon-warning">
                     <i class="bi bi-arrow-up-right"></i>
                 </div>
@@ -44,7 +44,7 @@
             </div>
         </div>
         <div class="col-sm-6 col-lg">
-            <div class="stat-card h-100">
+            <div class="stat-card h-100 hover-lift">
                 <div class="stat-card-icon icon-info">
                     <i class="bi bi-arrow-down-left"></i>
                 </div>
@@ -55,7 +55,7 @@
             </div>
         </div>
         <div class="col-sm-6 col-lg">
-            <div class="stat-card h-100">
+            <div class="stat-card h-100 hover-lift">
                 <div class="stat-card-icon icon-danger">
                     <i class="bi bi-chat-dots"></i>
                 </div>

@@ -6,14 +6,9 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['user_id', 'sender_id', 'receiver_id', 'skill_id', 'message', 'status'])]
+#[Fillable(['sender_id', 'receiver_id', 'skill_id', 'message', 'status'])]
 class HelpRequest extends Model
 {
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
-
     public function sender(): BelongsTo
     {
         return $this->belongsTo(User::class, 'sender_id');

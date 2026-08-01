@@ -52,6 +52,10 @@
             </ul>
 
             <div class="d-flex align-items-center gap-2">
+                <button type="button" class="theme-toggle" data-theme-toggle aria-label="Basculer le thème sombre">
+                    <span class="theme-toggle-knob"><i class="bi bi-sun-fill" data-theme-icon></i></span>
+                </button>
+
                 <a href="{{ route('skills.create') }}" class="btn btn-primary btn-sm d-none d-lg-inline-flex">
                     <i class="bi bi-plus-lg"></i>
                     <span>Nouvelle compétence</span>
